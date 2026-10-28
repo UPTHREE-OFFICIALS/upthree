@@ -1,0 +1,7 @@
+@tailwind base;@tailwind components;@tailwind utilities;
+html{scroll-behavior:smooth;color-scheme:light}section[id]{scroll-margin-top:84px}
+:root{--color-smoke:247 248 250;--color-surface:255 255 255;--color-soft:255 240 229;--color-ink:32 33 36;--color-mute:107 114 128;--color-line:232 234 240}
+:root[data-theme="dark"]{color-scheme:dark;--color-smoke:19 21 24;--color-surface:29 32 35;--color-soft:66 43 28;--color-ink:239 241 244;--color-mute:166 173 183;--color-line:55 60 67}
+body{@apply bg-smoke text-ink antialiased overflow-x-hidden;transition:background-color .25s ease,color .25s ease}
+:focus-visible{outline:2px solid #FF7012;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}body{transition:none}}

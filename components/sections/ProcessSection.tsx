@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useScrollSteps } from "@/lib/useScrollSteps";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { PROCESS } from "@/lib/constants";
@@ -12,10 +12,10 @@ const stepDetails = [
 ];
 
 export default function ProcessSection() {
-  const [active, setActive] = useState(0);
+  const { ref, active, goTo: setActive } = useScrollSteps(PROCESS.length);
   const reducedMotion = useReducedMotion();
   const [title] = PROCESS[active];
-  return <section id="how" className="mx-auto max-w-6xl px-4 py-20">
+  return <section id="how" ref={ref} className="lg:h-[300vh]"><div className="mx-auto flex max-w-6xl flex-col justify-center px-4 py-20 lg:sticky lg:top-16 lg:min-h-[calc(100svh-4rem)] lg:py-10">
     <div className="mb-12 max-w-2xl"><p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand">How we work</p><h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">A clear path from first idea to launch.</h2><p className="mt-4 text-mute">You stay part of the process, with clear decisions at each step.</p></div>
     <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
       <div role="tablist" aria-label="Project steps" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
@@ -32,10 +32,10 @@ export default function ProcessSection() {
         </motion.div></AnimatePresence>
         <div className="mt-8 flex items-center justify-between border-t border-white/15 pt-5">
           <span className="text-sm text-white/45">{active + 1} of {PROCESS.length}</span>
-          {active < PROCESS.length - 1 && <button type="button" onClick={() => setActive((step) => step + 1)} className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-brand">Next step <ArrowRight size={16} /></button>}
+          {active < PROCESS.length - 1 && <button type="button" onClick={() => setActive(active + 1)} className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-brand">Next step <ArrowRight size={16} /></button>}
           {active === PROCESS.length - 1 && <a href="#contact" className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-brand">Start a conversation <ArrowRight size={16} /></a>}
         </div>
       </div>
     </div>
-  </section>;
+  </div></section>;
 }

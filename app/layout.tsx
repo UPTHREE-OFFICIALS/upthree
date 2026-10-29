@@ -1,30 +1,15 @@
 import type { Metadata } from "next";
+import ScrollProgress from "@/components/ui/ScrollProgress";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import "./globals.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
-
 export const metadata: Metadata = {
-  title: "UPTHREE — Web Development Studio",
-  description:
-    "UPTHREE designs and develops clear, effective websites and digital tools for growing businesses.",
-  openGraph: {
-    title: "UPTHREE — Web Development Studio",
-    description: "Let's build something that works.",
-    type: "website",
-  },
+  title: "UPTHREE — Design. Build. Manage.",
+  description: "UPTHREE shapes distinctive identities and builds thoughtful digital experiences that help businesses move forward.",
+  openGraph: { title: "UPTHREE — Design. Build. Manage.", description: "Let's build something that works.", type: "website" },
+  icons: { icon: "/logo.png" },
 };
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body>
-        {children}
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-        )}
-      </body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return <html lang="en" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: "try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}" }} /></head>
+    <body><ScrollProgress /><Navbar />{children}<Footer /></body></html>;
 }

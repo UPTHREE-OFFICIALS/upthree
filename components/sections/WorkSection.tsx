@@ -60,12 +60,13 @@ export default function WorkSection() {
   const active = concepts.find((concept) => concept.id === activeId) ?? concepts[0];
 
   return (
-    <section id="work" className="bg-deep py-20 text-white sm:py-24">
-      <div className="mx-auto max-w-6xl px-4">
+    <section id="work" className="scroll-mt-16 bg-deep py-20 text-white sm:py-24">
+      <motion.div initial={reducedMotion ? false : { opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="mx-auto max-w-6xl px-4">
         <div className="mb-12 max-w-2xl">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand">A few directions</p>
-          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Good websites make the next step feel easy.</h2>
-          <p className="mt-4 text-white/65">Explore a few fictional concepts to see how a clear idea can shape a digital experience. These are demonstrations, not client projects.</p>
+          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand">Our approach</p>
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">A brand is more than a logo. It&apos;s every step forward.</h2>
+          <p className="mt-4 text-white/65">From the first idea to the finished experience, we bring design, build and ongoing care together to make your business memorable.</p>
+          <div className="mt-7 flex flex-wrap gap-3 text-xs font-semibold tracking-[0.16em] text-white/75 sm:gap-5 sm:text-sm"><span>DESIGN</span><span className="text-brand">→</span><span>BUILD</span><span className="text-brand">→</span><span>MANAGE</span></div>
         </div>
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
           <div>
@@ -144,7 +145,7 @@ export default function WorkSection() {
             <p className="mt-3 text-center text-xs text-white/40">Concept demonstration · No real business or client work represented</p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

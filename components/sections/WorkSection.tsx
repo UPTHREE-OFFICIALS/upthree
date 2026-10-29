@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useScrollSteps } from "@/lib/useScrollSteps";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Menu } from "lucide-react";
 
@@ -55,13 +55,15 @@ const concepts = [
 ];
 
 export default function WorkSection() {
-  const [activeId, setActiveId] = useState(concepts[0].id);
+  const { ref, active: activeIndex, goTo } = useScrollSteps(concepts.length);
+  const activeId = concepts[activeIndex].id;
+  const setActiveId = (id: string) => goTo(concepts.findIndex((c) => c.id === id));
   const reducedMotion = useReducedMotion();
   const active = concepts.find((concept) => concept.id === activeId) ?? concepts[0];
 
   return (
-    <section id="work" className="scroll-mt-16 bg-deep py-20 text-white sm:py-24">
-      <motion.div initial={reducedMotion ? false : { opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="mx-auto max-w-6xl px-4">
+    <section id="work" ref={ref} className="scroll-mt-16 bg-deep text-white lg:h-[300vh]"><div className="py-20 sm:py-24 lg:sticky lg:top-16 lg:flex lg:min-h-[calc(100svh-4rem)] lg:items-center lg:py-8">
+      <motion.div initial={reducedMotion ? false : { opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="mx-auto w-full max-w-6xl px-4">
         <div className="mb-12 max-w-2xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand">Our approach</p>
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">A brand is more than a logo. It&apos;s every step forward.</h2>
@@ -113,7 +115,7 @@ export default function WorkSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={reducedMotion ? undefined : { opacity: 0, y: -8 }}
                 transition={{ duration: 0.25 }}
-                className="overflow-hidden rounded-2xl border border-white/15 bg-white p-2 text-ink shadow-2xl sm:p-3"
+                className="overflow-hidden rounded-2xl border border-white/15 light-scope bg-white p-2 text-ink shadow-2xl sm:p-3"
               >
                 <div className="flex items-center justify-between border-b border-line px-2 pb-3 pt-1 sm:px-3">
                   <div className="flex gap-1.5" aria-hidden="true"><span className="h-2 w-2 rounded-full bg-[#f3b5a5]" /><span className="h-2 w-2 rounded-full bg-[#f4d58b]" /><span className="h-2 w-2 rounded-full bg-[#a5c9ad]" /></div>
@@ -145,7 +147,6 @@ export default function WorkSection() {
             <p className="mt-3 text-center text-xs text-white/40">Concept demonstration · No real business or client work represented</p>
           </div>
         </div>
-      </motion.div>
-    </section>
+      </motion.div></div></section>
   );
 }

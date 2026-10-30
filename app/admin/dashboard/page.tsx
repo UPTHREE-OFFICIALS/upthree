@@ -13,7 +13,7 @@ type Message = {
   name: string;
   businessName: string;
   email: string;
-  subject: string;
+  service: string;
   message: string;
   status: "received" | "contacted";
   createdAt: string;
@@ -79,7 +79,6 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="min-h-screen bg-smoke text-ink">
-      <aside className="fixed inset-0 z-20 bg-[#090a0c]" />
       <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-line bg-smoke/90 px-4 backdrop-blur lg:px-6">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2 text-ink/70 transition hover:text-ink">
@@ -97,7 +96,7 @@ export default function AdminDashboardPage() {
         </div>
       </header>
 
-      <main className="pt-20 pb-16 pl-20 lg:pl-28">
+      <main className="pt-20 pb-16">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -184,11 +183,11 @@ export default function AdminDashboardPage() {
                   <MessageCircle size={16} className="text-brand" />
                   <div>
                     <h2 className="font-semibold">Contact-Support</h2>
-                    <p className="text-xs text-mute">Contacted messages</p>
+                    <p className="text-xs text-mute">Contact form inquiries</p>
                   </div>
                 </div>
                 <span className="rounded-full bg-brand/10 px-2.5 py-0.5 text-[10px] font-semibold text-brand">
-                  {contacted.length} new
+                  {messages.length} messages
                 </span>
               </div>
 
@@ -196,15 +195,15 @@ export default function AdminDashboardPage() {
                 <div className="flex items-center gap-2 rounded-b-2xl border border-line bg-surface p-8 text-sm text-mute">
                   <span className="h-3 w-3 animate-pulse rounded-full bg-mute" /> Loading messages...
                 </div>
-              ) : contacted.length === 0 ? (
+              ) : messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                   <MessageCircle size={28} className="text-mute" />
                   <p className="mt-3 font-medium text-ink">No contacted messages yet</p>
                   <p className="text-sm text-mute">Messages from visitors will appear here.</p>
                 </div>
               ) : (
-                <ul className="max-h-[520px] overflow-y-autodivide-y border-border divide-solid">
-                  {contacted.map((m) => (
+                <ul className="max-h-[520px] divide-y divide-line overflow-y-auto">
+                  {messages.map((m) => (
                     <li key={m.id}>
                       <button
                         onClick={() => { setSelected(m); setModalOpen(true); }}
@@ -214,6 +213,7 @@ export default function AdminDashboardPage() {
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-ink truncate">{m.name}</p>
                           <p className="text-xs text-mute truncate">{m.businessName} · {m.email}</p>
+                          <p className="text-xs text-brand truncate">{m.service}</p>
                         </div>
                         <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${STATUS_BADGE[m.status]}`}>
                           {STATUS_LABEL[m.status]}
@@ -237,7 +237,7 @@ export default function AdminDashboardPage() {
                     <li key={m.id} className="flex items-start gap-2 rounded-lg border border-line p-2">
                       <MessageCircle size={13} className="mt-0.5 text-brand" />
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-ink">{m.subject}</p>
+                        <p className="text-sm font-medium text-ink">{m.service}</p>
                         <p className="text-xs text-mute truncate">{m.name} · {m.email}</p>
                       </div>
                     </li>
@@ -271,8 +271,8 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
               <div className="rounded-lg bg-smoke/70 p-3">
-                <p className="text-xs font-semibold text-ink/70">Subject</p>
-                <p className="font-medium text-ink">{selected.subject}</p>
+                <p className="text-xs font-semibold text-ink/70">What do they need?</p>
+                <p className="font-medium text-ink">{selected.service}</p>
               </div>
               <div>
                 <p className="text-xs font-semibold text-ink/70">Message</p>

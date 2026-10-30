@@ -28,13 +28,14 @@ export default function AdminLoginPage() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const password = String(new FormData(event.currentTarget).get("password") ?? "").trim();
     setError(null);
     setSubmitting(true);
     try {
       const response = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: "admin", password: "Ravavi@2026" }),
+        body: JSON.stringify({ username: "admin", password }),
       });
       const result = await response.json();
       if (!response.ok) {
@@ -86,8 +87,7 @@ export default function AdminLoginPage() {
                     <input
                       id={f.id}
                       name={f.id}
-                      ref={f.id === "password" ? undefined : undefined}
-                      value={f.readOnly ? f.value : ""}
+                      defaultValue={f.value}
                       type={showPassword && !f.readOnly ? "text" : f.type}
                       autoComplete={f.autoComplete}
                       disabled={f.readOnly}

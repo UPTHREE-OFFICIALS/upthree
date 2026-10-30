@@ -10,6 +10,17 @@ export const metadata: Metadata = {
   icons: { icon: "/logo.png" },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: "try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}" }} /></head>
-    <body><ScrollProgress /><Navbar />{children}<Footer /></body></html>;
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            // Dark is the default; a stored 'light' choice is honoured instead of being overwritten.
+            __html: "try{document.documentElement.classList.toggle('dark',localStorage.getItem('theme')!=='light')}catch(e){document.documentElement.classList.add('dark')}",
+          }}
+        />
+      </head>
+      <body><ScrollProgress /><Navbar />{children}<Footer /></body>
+    </html>
+  );
 }

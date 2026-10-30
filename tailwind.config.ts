@@ -5,14 +5,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        smoke: "rgb(var(--color-smoke) / <alpha-value>)",
-        surface: "rgb(var(--color-surface) / <alpha-value>)",
+        smoke: "rgb(var(--smoke) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
         deep: "#202124",
         brand: "#FF7012",
-        soft: "rgb(var(--color-soft) / <alpha-value>)",
-        ink: "rgb(var(--color-ink) / <alpha-value>)",
-        mute: "rgb(var(--color-mute) / <alpha-value>)",
-        line: "rgb(var(--color-line) / <alpha-value>)",
+        soft: "rgb(var(--soft) / <alpha-value>)",
+        ink: "rgb(var(--ink) / <alpha-value>)",
+        mute: "rgb(var(--mute) / <alpha-value>)",
+        line: "rgb(var(--line) / <alpha-value>)",
         sky: "#EAF3FF",
         azure: "#4A7DFF",
       },

@@ -8,16 +8,11 @@ type InquiryField = "name" | "businessName" | "email" | "service" | "message";
 type Errors = Partial<Record<InquiryField, string>>;
 
 const inputClass = "mt-1.5 w-full rounded-lg border border-line bg-smoke/70 px-3.5 py-2.5 text-sm outline-none transition placeholder:text-mute/60 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-brand/10";
-const demo = {
-  name: "Alex Morgan",
-  businessName: "Northstar Studio",
-  email: "alex@example.com",
-  service: SERVICES[0].name,
-  message: "I need a modern website to introduce my business, showcase my services, and make it easy for new customers to get in touch.",
-};
+type ContactValues = { name: string; businessName: string; email: string; service: string; message: string };
+const empty = { name: "", businessName: "", email: "", service: SERVICES[0].name, message: "" };
 
 export default function ContactSection() {
-  const [values, setValues] = useState(demo);
+  const [values, setValues] = useState<ContactValues>(empty);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<{ kind: "success" | "error"; message: string } | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -43,7 +38,7 @@ export default function ContactSection() {
       const response = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, name: values.name.trim(), businessName: values.businessName.trim(), email: values.email.trim(), message: values.message.trim() }),
+        body: JSON.stringify({ name: values.name.trim(), businessName: values.businessName.trim(), email: values.email.trim(), service: values.service, message: values.message.trim() }),
       });
       const result = await response.json();
       if (!response.ok) {
@@ -80,7 +75,7 @@ export default function ContactSection() {
 
         <form onSubmit={submit} noValidate aria-label="Project inquiry" className="rounded-2xl border border-line bg-surface p-5 shadow-card sm:p-7">
           <div className="mb-5 flex items-start justify-between gap-4">
-            <div><h3 className="font-semibold">Project inquiry</h3><p className="mt-1 text-xs text-mute">Sample details are prefilled—replace them before sending.</p></div>
+            <div><h3 className="font-semibold">Project inquiry</h3><p className="mt-1 text-xs text-mute">Fill out the fields below—nothing is saved or sent yet.</p></div>
             <span className="shrink-0 rounded-full bg-soft px-2.5 py-1 text-[10px] font-semibold text-brand">EDIT SAMPLE</span>
           </div>
           <div className="grid gap-x-4 gap-y-3.5 sm:grid-cols-2">

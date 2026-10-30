@@ -1,9 +1,24 @@
 @tailwind base;@tailwind components;@tailwind utilities;
+
 :root{--smoke:247 248 250;--surface:255 255 255;--ink:32 33 36;--mute:107 114 128;--line:232 234 240;--soft:255 240 229;--deep:32 33 36}
 .dark{--smoke:18 19 22;--surface:28 30 34;--ink:241 242 244;--mute:154 160 170;--line:48 51 58;--soft:58 36 22;--deep:10 11 13}
 .light-scope{--smoke:247 248 250;--ink:32 33 36;--mute:107 114 128;--line:232 234 240}
-html{scroll-behavior:smooth}section[id]{scroll-margin-top:64px}
-body{background-color:rgb(var(--smoke));color:rgb(var(--ink));overflow-x:hidden;-webkit-font-smoothing:antialiased;
- background-image:radial-gradient(60% 40% at 100% 0%,rgba(255,112,18,.10),transparent 60%),radial-gradient(50% 40% at 0% 100%,rgba(255,112,18,.07),transparent 60%);background-attachment:fixed}
+
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:64px}
+
+body{
+  background-color:rgb(var(--smoke));
+  color:rgb(var(--ink));
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(60% 40% at 100% 0%,rgba(255,112,18,.10),transparent 60%),radial-gradient(50% 40% at 0% 100%,rgba(255,112,18,.07),transparent 60%);
+  background-attachment:fixed;
+  color-scheme:dark;
+}
+
+body,input,select,textarea,button{color-scheme:dark}
+
 :focus-visible{outline:2px solid #FF7012;outline-offset:2px}
+
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

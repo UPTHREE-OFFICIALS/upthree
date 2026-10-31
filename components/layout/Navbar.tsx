@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, Moon, Sun, X } from "lucide-react";
+
 const LINKS = [
   ["home", "Home"],
   ["services", "Services"],
@@ -10,6 +12,7 @@ const LINKS = [
   ["how", "Process"],
   ["contact", "Contact"],
 ] as const;
+
 const SECTION_LABELS: Record<string, string> = {
   home: "Home",
   work: "Concepts",
@@ -17,10 +20,12 @@ const SECTION_LABELS: Record<string, string> = {
   how: "Process",
   contact: "Contact",
 };
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
+
   useEffect(() => {
     setDark(document.documentElement.classList.contains("dark"));
     const io = new IntersectionObserver(
@@ -33,6 +38,7 @@ export default function Navbar() {
     });
     return () => io.disconnect();
   }, []);
+
   function toggle() {
     const d = !dark;
     setDark(d);
@@ -41,8 +47,9 @@ export default function Navbar() {
       localStorage.setItem("theme", d ? "dark" : "light");
     } catch {}
   }
+
   const link = (id: string, l: string) => (
-    <a
+    <Link
       key={id}
       href={`/#${id}`}
       onClick={() => setOpen(false)}
@@ -50,8 +57,9 @@ export default function Navbar() {
       className={`rounded-full px-3 py-2 text-sm ${active === id ? "bg-soft text-brand" : "text-mute hover:text-ink"}`}
     >
       {SECTION_LABELS[id] ?? l}
-    </a>
+    </Link>
   );
+
   const theme = (
     <button
       onClick={toggle}
@@ -61,13 +69,14 @@ export default function Navbar() {
       {dark ? <Sun size={17} /> : <Moon size={17} />}
     </button>
   );
+
   return (
     <header className="sticky top-0 z-40 h-16 border-b border-line bg-smoke/85 backdrop-blur">
       <nav
         className="mx-auto flex h-full max-w-6xl items-center justify-between px-4"
         aria-label="Main"
       >
-        <a href="/#home" aria-label="UPTHREE home">
+        <Link href="/#home" aria-label="UPTHREE home">
           <Image
             src="/logo.png"
             alt="UPTHREE"
@@ -76,27 +85,27 @@ export default function Navbar() {
             priority
             className="h-11 w-auto"
           />
-        </a>
+        </Link>
         <div className="hidden items-center gap-1 lg:flex">
           {LINKS.map(([i, l]) => link(i, l))}
-          <a
+          <Link
             href="/projects"
             className="rounded-full px-3 py-2 text-sm text-mute hover:text-ink"
           >
             Projects
-          </a>
-          <a
+          </Link>
+          <Link
             href="/#contact"
             className="ml-2 rounded-full bg-brand px-5 py-2 text-sm font-medium text-white hover:opacity-90"
           >
             Start a Project
-          </a>
-          <a
+          </Link>
+          <Link
             href="/services"
             className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium"
           >
             All Services
-          </a>
+          </Link>
           {theme}
         </div>
         <div className="flex items-center gap-2 lg:hidden">
@@ -121,19 +130,19 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-1 p-4">
               {LINKS.map(([i, l]) => link(i, l))}
-              <a href="/projects" className="px-3 py-2 text-sm text-mute">
+              <Link href="/projects" onClick={() => setOpen(false)} className="px-3 py-2 text-sm text-mute">
                 Projects
-              </a>
-              <a href="/services" className="px-3 py-2 text-sm text-mute">
+              </Link>
+              <Link href="/services" onClick={() => setOpen(false)} className="px-3 py-2 text-sm text-mute">
                 All Services
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#contact"
                 onClick={() => setOpen(false)}
                 className="mt-2 rounded-full bg-brand px-5 py-3 text-center font-medium text-white"
               >
                 Start a Project
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}

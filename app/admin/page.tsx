@@ -1,19 +1,13 @@
-'use client'
+"use client";
 
-import React , {useEffect}from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-const page = () => {
-  const router = useRouter()
+export default function AdminPage() {
+  const router = useRouter();
   useEffect(() => {
-    router.push('/admin/login')
-  }, [])
+    router.push("/admin/login");
+  }, [router]);
 
-  return (
-    <div>
-      
-    </div>
-  )
+  return <div />;
 }
-
-export default page

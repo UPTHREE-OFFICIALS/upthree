@@ -1,12 +1,69 @@
 import { NextResponse } from "next/server";
-// Validates the inquiry and forwards it to INQUIRY_WEBHOOK_URL (e.g. a form service). Without it, nothing is sent and we say so.
+import { addInquiry } from "@/lib/inquiries";
+
 export async function POST(req: Request) {
-  let b: Record<string, string>;
-  try { b = await req.json(); } catch { return NextResponse.json({ error: "Invalid request." }, { status: 400 }); }
-  if (!b.name?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email ?? "") || (b.message ?? "").trim().length < 10) return NextResponse.json({ error: "Please complete the required fields." }, { status: 400 });
-  const url = process.env.INQUIRY_WEBHOOK_URL;
-  if (!url) return NextResponse.json({ error: "Online sending isn't set up yet. Please email us directly using the address shown here." }, { status: 503 });
-  try { const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(b) }); if (!r.ok) throw new Error(); }
-  catch { return NextResponse.json({ error: "We couldn't deliver your inquiry. Please try again." }, { status: 502 }); }
-  return NextResponse.json({ message: "Thanks! Your project inquiry has been received." });
+  let body: Record<string, string>;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request payload." }, { status: 400 });
+  }
+
+  const name = body.name?.trim() || "";
+  const email = body.email?.trim() || "";
+  const businessName = body.businessName?.trim() || "";
+  const service = body.service || "Business Websites";
+  const message = body.message?.trim() || "";
+
+  if (!name) {
+    return NextResponse.json({ error: "Please provide your name." }, { status: 400 });
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json({ error: "Please provide a valid email address." }, { status: 400 });
+  }
+
+  if (message.length < 10) {
+    return NextResponse.json(
+      { error: "Please enter at least 10 characters describing your project." },
+      { status: 400 }
+    );
+  }
+
+  try {
+    // 1. Store the submission into our table with timestamp
+    const saved = await addInquiry({
+      name,
+      businessName,
+      email,
+      service,
+      message,
+    });
+
+    // 2. Optionally forward to external webhook if configured
+    const webhookUrl = process.env.INQUIRY_WEBHOOK_URL;
+    if (webhookUrl) {
+      try {
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(saved),
+        });
+      } catch (err) {
+        console.warn("External webhook delivery notice:", err);
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Thanks! Your project inquiry has been received.",
+      inquiry: saved,
+    });
+  } catch (error) {
+    console.error("Failed to store inquiry:", error);
+    return NextResponse.json(
+      { error: "Could not save your inquiry. Please try again." },
+      { status: 500 }
+    );
+  }
 }

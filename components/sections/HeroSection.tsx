@@ -32,7 +32,7 @@ export default function HeroSection() {
   const bar = useTransform(p, [0.45, 0.95], R("0%", "100%"));
   const at = (n: number) => (reduce ? -1 : n);
   const shown = reduce ? STAGES : [STAGES[stage]];
-  return <section id="home" ref={ref} className={reduce ? "min-h-[calc(100svh-4rem)]" : "h-[400vh]"}>
+  return <section id="home" ref={ref} className={reduce ? "min-h-[calc(100svh-4rem)]" : "h-[280vh]"}>
     <h1 className="sr-only">UPTHREE — Design. Build. Manage.</h1>
     <div className="sticky top-16 h-[calc(100svh-4rem)] overflow-hidden">
       <motion.div aria-hidden style={{ opacity: veil }} className="absolute inset-0 bg-[#09090b]" />
